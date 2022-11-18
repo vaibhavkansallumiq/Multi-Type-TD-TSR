@@ -1,5 +1,5 @@
 import cv2
-from google.colab.patches import cv2_imshow
+import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_prediction(img, predictor):
@@ -27,7 +27,9 @@ def plot_prediction(img, predictor):
 
     # Displaying the image
     print("TABLE DETECTION:")  
-    cv2_imshow(img)
+    plt.imshow(img)
+    plt.show()
+
 
 def make_prediction(img, predictor):
     
@@ -42,7 +44,9 @@ def make_prediction(img, predictor):
         table_list.append(np.array(img[int(y1):int(y2), int(x1):int(x2)], copy=True))
         table_coords.append([int(x1),int(y1),int(x2-x1),int(y2-y1)])
         print("TABLE", i, ":")
-        cv2_imshow(img[int(y1):int(y2), int(x1):int(x2)])
+        plt.imshow(img[int(y1):int(y2), int(x1):int(x2)])
+        plt.show()
+
         print()
 
     return table_list, table_coords

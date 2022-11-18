@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 
-from google.colab.patches import cv2_imshow
 
 try:
     from PIL import Image
@@ -22,13 +21,15 @@ def recognize_structure(img):
 
     #print("img_height", img_height, "img_width", img_width)
 
-    cv2_imshow(img)
+    plt.imshow(img)
+    plt.show()
 
     # thresholding the image to a binary image
     # thresh, img_bin = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     img_bin = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 5, 5)
 
-    cv2_imshow(img_bin)
+    plt.imshow(img_bin)
+    plt.show()
 
     # inverting the image
     img_bin = 255 - img_bin
@@ -61,38 +62,47 @@ def recognize_structure(img):
     vertical_lines = cv2.dilate(image_1, ver_kernel, iterations=4)
     cv2.imwrite("/Users/marius/Desktop/vertical.jpg", vertical_lines)
     # Plot the generated image
-    cv2_imshow(image_1)
+    plt.imshow(image_1)
+    plt.show()
     
-    cv2_imshow(vertical_lines)
+    plt.imshow(vertical_lines)
+    plt.show()
 
     # Use horizontal kernel to detect and save the horizontal lines in a jpg
     image_2 = cv2.erode(img_bin, hor_kernel, iterations=3)
     horizontal_lines = cv2.dilate(image_2, hor_kernel, iterations=4)
 
     # Plot the generated image
-    cv2_imshow(image_2)
+    plt.imshow(image_2)
+    plt.show()
   
-    cv2_imshow(horizontal_lines)
+    plt.imshow(horizontal_lines)
+    plt.show()
 
 
     # Combine horizontal and vertical lines in a new third image, with both having same weight.
     img_vh = cv2.addWeighted(vertical_lines, 0.5, horizontal_lines, 0.5, 0.0)
-    cv2_imshow(img_vh)
+    plt.imshow(img_vh)
+    plt.show()
 
-    cv2_imshow(~img_vh)
+    plt.imshow(~img_vh)
+    plt.show()
 
     # Eroding and thesholding the image
     img_vh = cv2.erode(~img_vh, kernel, iterations=2)
-    cv2_imshow(img_vh)
+    plt.imshow(img_vh)
+    plt.show()
 
     thresh, img_vh = cv2.threshold(img_vh, 128, 255, cv2.THRESH_BINARY )
 
-    cv2_imshow(img_vh)
+    plt.imshow(img_vh)
+    plt.show()
   
     bitxor = cv2.bitwise_xor(img, img_vh)
     bitnot = cv2.bitwise_not(bitxor)
     # Plotting the generated image
-    cv2_imshow(bitnot)
+    plt.imshow(bitnot)
+    plt.show()
 
     # Detect contours for following box detection
     contours, hierarchy = cv2.findContours(img_vh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -140,7 +150,8 @@ def recognize_structure(img):
             image = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             box.append([x, y, w, h])
 
-    cv2_imshow(image)
+    plt.imshow(image)
+    plt.show()
 
     # Creating two lists to define row and column in which cell is located
     row = []
